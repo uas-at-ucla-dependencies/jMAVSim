@@ -105,7 +105,6 @@ public class Simulator implements Runnable {
     private static HashSet<Integer> monitorMessageIds = new HashSet<Integer>();
     private static boolean monitorMessage = false;
 
-    private Visualizer3D visualizer;
     private AbstractMulticopter vehicle;
     private CameraGimbal2D gimbal;
     private MAVLinkHILSystem hilSystem;
@@ -152,16 +151,6 @@ public class Simulator implements Runnable {
         //simpleEnvironment.setGroundLevel(0.0f);
         world.addObject(simpleEnvironment);
 
-        // Create GUI
-        System.out.println("Starting GUI...");  // this is the longest part of startup so let user know
-        visualizer = new Visualizer3D(world);
-        visualizer.setAAEnabled(GUI_ENABLE_AA);
-        if (GUI_START_MAXIMIZED) {
-            visualizer.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        }
-
-        // add GUI output stream handler for displaying messages
-        outputHandler.addOutputStream(visualizer.getOutputStream());
 
         MAVLinkSchema schema = null;
         try {
@@ -257,20 +246,7 @@ public class Simulator implements Runnable {
         if (USE_GIMBAL) {
             gimbal = buildGimbal();
             world.addObject(gimbal);
-            visualizer.setGimbalViewObject(gimbal);
         }
-
-        // Create simulation report updater
-        world.addObject(new ReportUpdater(world, visualizer));
-
-        visualizer.addWorldModels();
-        visualizer.setHilSystem(hilSystem);
-        visualizer.setVehicleViewObject(vehicle);
-
-        // set default view and zoom mode
-        visualizer.setViewType(GUI_START_VIEW);
-        visualizer.setZoomMode(GUI_START_ZOOM);
-        visualizer.toggleReportPanel(GUI_SHOW_REPORT_PANEL);
 
         // Open ports
         try {
