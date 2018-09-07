@@ -176,7 +176,7 @@ public class Visualizer3D extends JFrame {
 
         setViewType(VIEW_TYPE);
         setZoomMode(ZOOM_MODE);
-        setVisible(true);
+        setVisible(false);
         splitPane.resetToPreferredSizes();
         toggleReportPanel(false);
         resetView();
